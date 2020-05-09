@@ -33,7 +33,6 @@ class RestEndpoint:
 
         unsatisfied_args = set(wanted_args) - set(available_args.keys())
         if unsatisfied_args:
-            # Expected match info that doesn't exist
             raise HttpBadRequest('')
 
         return await method(**{arg_name: available_args[arg_name] for arg_name in wanted_args})
