@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -22,9 +22,10 @@ class User(Base):
     companytitle = Column(String(50))
     jobtype = Column(Integer)
     jobid = Column(Integer)
-    jobtitle = Column(Integer)
+    jobtitle = Column(String(50))
+    isAdviser = Column(Boolean)
 
-    def __init__(self, firstname, lastname, middlename, companyid, companytitle, jobtype, jobid, jobtitle):
+    def __init__(self, firstname, lastname, middlename, companyid, companytitle, jobtype, jobid, jobtitle, isAdviser):
         self.firstname = firstname
         self.lastname = lastname
         self.middlename = middlename
@@ -33,13 +34,14 @@ class User(Base):
         self.jobtype = jobtype
         self.jobid = jobid
         self.jobtitle = jobtitle
+        self.isAdviser = isAdviser
 
     @classmethod
     def from_json(cls, data):
         return cls(**data)
 
     def to_json(self):
-        to_serialize = ['firstname', 'lastname', 'middlename', 'companytitle', 'jobtitle']
+        to_serialize = ['firstname', 'lastname', 'middlename', 'companytitle', 'jobtitle', 'isAdviser']
         d = {}
         for attr_name in to_serialize:
             d[attr_name] = getattr(self, attr_name)
@@ -53,7 +55,7 @@ if __name__ == "__main__":
     Base.metadata.create_all(engine)
 
     users = [
-        User("Владыка", "Кожемякин", "Олегович", "1", "МТС", "12", "134", "Программист высшего ранга")
+        User("Владыка", "Кожемякин", "Олегович", 1, "МТС", 12, 134, "Программист высшего ранга", True)
     ]
 
     session.add(users[0])

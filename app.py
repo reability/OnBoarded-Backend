@@ -4,23 +4,22 @@ from aiohttp import web
 from Main.Resources.users_resource import UsersRestResource
 from Main.Models.model import User
 
-path_to_static_folder = "/Static"
+
+path_to_static_folder = r"C:\Users\vanur\PycharmProjects\OnBoarded-Backend\Static"
 
 
 async def test(request):
     return Response(text="Hello")
 
 
-users = {
-    User("Владыка", "Кожемякин", "Олегович", "1", "МТС", "12", "134", "Программист высшего ранга")
-}
+users = {}
 app = Application()
 
 app.router.add_route("*", "/", test)
 
-app.add_routes([web.static('/prefix', path_to_static_folder)])
+app.add_routes([web.static('/static', path_to_static_folder)])
 
-resource = UsersRestResource('users', User, users, ('firstname', 'lastname', 'middlename', 'companytitle', 'jobtitle'), 'lastname')
+resource = UsersRestResource('users', User, users, ('firstname', 'lastname', 'middlename', 'companytitle', 'jobtitle', 'isAdviser'), 'lastname')
 resource.register(app.router)
 
 web.static('/static', path_to_static_folder, follow_symlinks=True)
